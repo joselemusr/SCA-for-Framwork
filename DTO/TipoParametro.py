@@ -1,0 +1,2 @@
+DISCRETO = 1
+CONTINUO = 2

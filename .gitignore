@@ -1,0 +1,13 @@
+#.env
+.vscode
+.DS_Store
+/Config
+/__pycache__
+Database/desktop.ini
+Discretization/desktop.ini
+Instances/desktop.ini
+MachineLearning/desktop.ini
+Metaheuristics/desktop.ini
+Metrics/desktop.ini
+Problem/desktop.ini
+/desktop.ini
