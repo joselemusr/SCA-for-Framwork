@@ -4,6 +4,7 @@ from DTO.ParametroAgente import ParametroAgente
 from DTO.ParametroMH import ParametroMH
 from DTO import TipoDominio, TipoComponente
 from MH.PSO import PSO
+from MH.SCA import SCA
 
 from datetime import datetime
 from sqlalchemy import create_engine
@@ -34,15 +35,21 @@ sqlObtenerExp += "    limit 1) returning id, parametros;"
 def insertDummyExp(nombreExperimento):
     sqlInsert = "INSERT INTO datos_ejecucion(nombre_algoritmo, parametros, estado) VALUES (:nomExp, :param, 'pendiente')"
     parametros = Parametro()
-    parametros.setNomProblema("Esfera")
+    parametros.setNomProblema("SCP")
     #parametros.setInstProblema(paramBD.nomInstProblema)
-    parametros.setNomMH("Rand1Dimension")
+    parametros.setNomMH("SCA")
+    parametros.setInstProblema("Problema/scp/instances/mscpnrg2.txt")
+    parametros.setTransferFunctionType("V4")
+    parametros.setBinarizationType("Elitist")
+    parametros.setRepairType("repairSimple") #Puede ser "repairGPU", "repairSimple" o "repairCompleja" hasta el momento
     parametros.setNomAgente("AgenteGenerico")
     paramsMH = {}
-    saltoStr = "salto"
+    saltoStr = "a"
     paramsMH[saltoStr] = 2
-    paramsMH["poblacion"] = 40
-    paramsMH["numIter"] = 100
+    #paramsMH["poblacion"] = 40
+    #paramsMH["numIter"] = 100
+    paramsMH[SCA.NP] = 5
+    paramsMH[SCA.NUM_ITER] = 10
     parametros.setParametrosMH(paramsMH)
     paramsAgente = []
     salto = ParametroAgente()
@@ -66,7 +73,6 @@ def insertDummyExpPSO(nombreExperimento):
         parametros = Parametro()
         parametros.setNomProblema("SCP")
         parametros.setInstProblema("Problema/scp/instances/mscp41.txt")
-        
         parametros.setNomMH("PSO")
         parametros.setNomAgente("AgenteQL_HMM")
         paramsMH = {}
@@ -140,6 +146,9 @@ def obtenerExperimento(nombreExperimento):
     parametros.setInstProblema(paramBD.instProblema)
     parametros.setNomMH(paramBD.nomMH)
     parametros.setNomAgente(paramBD.nomAgente)
+    parametros.setTransferFunctionType(paramBD.TransferFunctionType)
+    parametros.setBinarizationType(paramBD.BinarizationType)
+    parametros.setRepairType(paramBD.RepairType)
     parametros.setParametrosMH(paramBD.parametrosMH._asdict())
     paramsAgente = []
     for pAgente in paramBD.parametrosAgente:

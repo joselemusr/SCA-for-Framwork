@@ -1,6 +1,10 @@
 import inspect
 
 class Problema:
+    TRANSFER_FUNCTION = "Function_Transfer"
+    BINARIZATION = "Binarization"
+    REPAIR = "repair"
+
     def __init__(self, ruta):
         print(f"problema leido")
 

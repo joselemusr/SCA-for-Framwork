@@ -7,6 +7,9 @@ class Parametro:
         self.nomAgente = None
         self.parametrosAgente = None
         self.parametrosMH = None
+        self.TransferFunctionType = None
+        self.BinarizationType = None
+        self.RepairType = None
     
     def setParametrosMH(self,parametros):
         self.parametrosMH = parametros
@@ -43,3 +46,21 @@ class Parametro:
 
     def getNomAgente(self):
         return self.nomAgente
+
+    def setTransferFunctionType(self,TransferFunctionType):
+        self.TransferFunctionType = TransferFunctionType
+
+    def getTransferFunctionType(self):
+        return self.TransferFunctionType
+
+    def setBinarizationType(self,BinarizationType):
+        self.BinarizationType = BinarizationType
+
+    def getBinarizationType(self):
+        return self.BinarizationType
+
+    def setRepairType(self,RepairType):
+        self.RepairType = RepairType
+
+    def getRepairType(self):
+        return self.RepairType

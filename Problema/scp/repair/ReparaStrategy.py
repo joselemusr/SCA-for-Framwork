@@ -31,15 +31,16 @@ class ReparaStrategy:
         self.cHeuristic = []
         self.lSolution = []
         self.dict = he.getRowColumn(matrix)
-    def repara_one(self, solution):    
-#        return self.reparaSimple(solution)
-        return self.repara(solution)
-    
-    def repara(self, solution):
-#        print(f'solution {len(solution)}')
+    def repara_one(self, solution,repairType):    
+
+        if repairType == "repairSimple":
+            return self.reparaSimple(solution)
+        
+        if repairType == "repairCompleja":
+            return self.reparaComplejo(solution)
+
+    def reparaComplejo(self, solution):
         lSolution = [i for i in range(len(solution)) if solution[i] == 1] 
-#        print(f'lSolution {len(lSolution)}')
-#        exit()
         lSolution, numReparaciones = sl.generaSolucion(lSolution,self.matrix,self.pesos,self.rHeuristic,self.dictcHeuristics,self.dict,self.cHeuristic,self.dictCol)
         sol = np.zeros(self.cols, dtype=np.float)
         sol[lSolution] = 1

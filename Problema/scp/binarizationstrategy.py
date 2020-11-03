@@ -36,11 +36,6 @@ class BinarizationStrategy:
         if(self.tecnica=="vShape4"):
             self.funcShape = self.vShape4
         
-#        tb = [funcShape(item) for item in x]
-        
-#        pool = mp.Pool(4)
-#        tb = pool.map(funcShape, x)
-#        pool.close()
         
         self.funcBin = None
         if(binary=="Standar"):
@@ -59,44 +54,6 @@ class BinarizationStrategy:
             self.funcBin = self.elitist
             
         self.mejorSol = None
-        
-#        matrizbinaria = [funcBin(item) for item in tb]
-        
-#        pool = mp.Pool(4)
-#        matrizbinaria = pool.map(funcBin, tb)
-#        pool.close()
-        
-        
-#        for i in range(len(x)):
-#            tb = 0
-#            if(self.tecnica=="sShape1"):
-#                tb = self.sShape1(x[i])
-#            if(self.tecnica=="sShape2"):
-#                tb = self.sShape2(x[i])
-#            if(self.tecnica=="sShape3"):
-#                tb = self.sShape3(x[i])
-#            if(self.tecnica=="sShape4"):
-#                tb = self.sShape4(x[i])
-#            if(self.tecnica=="vShape1"):
-#                tb = self.vShape1(x[i])
-#            if(self.tecnica=="vShape2"):
-#                tb = self.vShape2(x[i])
-#            if(self.tecnica=="vShape3"):
-#                tb = self.vShape3(x[i])
-#            if(self.tecnica=="vShape4"):
-#                tb = self.vShape4(x[i])
-#            
-#            if(binary=="Standar"):
-#                matrizbinaria.append(self.standard(tb))
-#            
-#            if(binary=="Complement"):
-#                matrizbinaria.append(self.complement(tb))
-#            
-#            if (binary=="StaticProbability"):
-#                matrizbinaria.append(self.staticProbability(tb, 0.4))
-#                
-#            if(binary=="Elitist"):
-#                matrizbinaria.append(self.elitist(tb))
                 
         self.set_binary(matrizbinaria)
         #print(matrizbinaria)

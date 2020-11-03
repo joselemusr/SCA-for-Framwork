@@ -44,7 +44,7 @@ class SCA(Metaheuristica):
 
     def realizarBusqueda(self):
         self._perturbarSoluciones()
-        fitness = self.problema.evaluarFitness(self.problema.decode(self.soluciones))
+        fitness = self.problema.evaluarFitness(self.soluciones)
         assert self.soluciones.shape[0] == fitness.shape[0], "El numero de fitness es diferente al numero de soluciones"
         if self.fitnessAnterior is None: self.fitnessAnterior = fitness
         self.idxMejorSolucion = self.problema.getMejorIdx(fitness)
@@ -62,15 +62,6 @@ class SCA(Metaheuristica):
 
         self.fitnessAnterior = fitness
 
-        
-        #minFitness = np.min(fitness)
-        #indicadorFitness = IndicadoresMH()
-        #indicadorFitness.setNombre(TipoIndicadoresMH.FITNESS)
-        #indicadorFitness.setValor(minFitness)
-        #indicadorMejora = IndicadoresMH()
-        #indicadorMejora.setNombre(TipoIndicadoresMH.INDICE_MEJORA)
-        #indicadorMejora.setValor(self.problema.getIndiceMejora())
-        #self.indicadores = [indicadorFitness, indicadorMejora]
         self.indicadores = {
             TipoIndicadoresMH.INDICE_MEJORA:self.problema.getIndiceMejora()
             ,TipoIndicadoresMH.FITNESS_MEJOR_GLOBAL:self.problema.getMejorEvaluacion()
@@ -78,35 +69,16 @@ class SCA(Metaheuristica):
             ,TipoIndicadoresMH.FITNESS_PROMEDIO:np.mean(fitness)
         }
 
-    def _perturbarSoluciones(self):        
-        for i in range(self.problema.getNumDim()):
+    def _perturbarSoluciones(self): 
+        if self.idxMejorSolucion is None:
+            self.idxMejorSolucion = np.random.randint(low = 0, high = self.soluciones.shape[0])
 
-            if self.idxMejorSolucion is None: #Para la primera iteración
-                self.idxMejorSolucion = np.random.randint(low=0,high=self.soluciones.shape[0])
-
-            #idsPerturbar = np.random.randint(low=0,high=self.problema.getNumDim(), size=(self.soluciones.shape[0]))
-            #columnas = np.arange(self.soluciones.shape[0])
-                
-            r1 = self.parametros['a'] - (self.IteracionActual*(self.parametros['a']/self.getParametros()["numIter"])) #Escalar
-            r4 = np.random.uniform(low=0.0,high=1.0)
-            
-            if r4 < 0.5: #El paper define el criterio de elección como 0.5 "valor duro"
-
-                r2 =(2*np.pi) * np.random.uniform(low=0.0,high=1.0, size=(self.soluciones.shape[0]))
-                r3 = np.random.uniform(low=0.0,high=2.0, size=(self.soluciones.shape[0]))
-
-                movimiento = (r1 * np.sin(r2)) * np.absolute((r3 * self.soluciones[self.idxMejorSolucion][i]) - self.soluciones[:, i]).T
-
-                self.soluciones[:, i] += movimiento.T
-
-            else:
-
-                r2 =(2*np.pi) * np.random.uniform(low=0.0,high=1.0, size=(self.soluciones.shape[0]))
-                r3 = np.random.uniform(low=0.0,high=2.0, size=(self.soluciones.shape[0]))
-
-                movimiento = (r1 * np.cos(r2)) * np.absolute((r3 * self.soluciones[self.idxMejorSolucion][i]) - self.soluciones[:, i]).T
-
-                self.soluciones[:, i] += movimiento.T
+        r1 = self.parametros['a'] - (self.IteracionActual*(self.parametros['a']/int(self.getParametros()[SCA.NUM_ITER]))) #Escalar
+        r2 = (2*np.pi) * np.random.uniform(low=0.0,high=1.0, size=self.soluciones.shape)
+        r3 = np.random.uniform(low=0.0,high=2.0, size=self.soluciones.shape)
+        r4 = np.random.uniform(low=0.0,high=1.0, size=self.soluciones.shape[0])
+        self.soluciones[r4<0.5] = self.soluciones[r4<0.5] + np.multiply(r1,np.multiply(np.sin(r2[r4<0.5]),np.abs(np.multiply(r3[r4<0.5],self.soluciones[self.idxMejorSolucion])-self.soluciones[r4<0.5])))
+        self.soluciones[r4>=0.5] = self.soluciones[r4>=0.5] + np.multiply(r1,np.multiply(np.cos(r2[r4>=0.5]),np.abs(np.multiply(r3[r4>=0.5],self.soluciones[self.idxMejorSolucion])-self.soluciones[r4>=0.5])))
 
     def getIndicadores(self):
         return self.indicadores

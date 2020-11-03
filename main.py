@@ -28,8 +28,8 @@ if __name__ == "__main__":
     cont = 0
     
     #SOLO PARA PRUEBAS
-    #RegistroMH.insertDummyExp(nomExperimento)
-    RegistroMH.insertDummyExpPSO(nomExperimento)
+    RegistroMH.insertDummyExp(nomExperimento)
+    #RegistroMH.insertDummyExpPSO(nomExperimento)
 
     for _ in range(100):
         experimento = RegistroMH.obtenerExperimento(nomExperimento)
@@ -38,12 +38,13 @@ if __name__ == "__main__":
             parametros = experimento.getParametros()
             if parametros.getInstProblema() is not None:
                 problema = ProblemaFactory.crearConParams(parametros.getNomProblema(), parametros.getInstProblema())
+                problema.setParametros({problema.TRANSFER_FUNCTION:parametros.getTransferFunctionType(),problema.BINARIZATION:parametros.getBinarizationType(),problema.REPAIR:parametros.getRepairType()})
             else:
                 problema = ProblemaFactory.crear(parametros.getNomProblema())
             print(f"nombre del problema {problema.getNombre()}")
             
-            #if parametros.getInstProblema() is not None:
-            #    problema.leer(os.path.join(C_PROBLEM, parametros.getNomProblema(), parametros.getInstProblema()))
+            
+
             mh = MHFactory.crear(parametros.getNomMH())
             
             mh.setProblema(problema)
@@ -63,7 +64,6 @@ if __name__ == "__main__":
             RegistroMH.guardarExperimento(experimento, inicio, fin)
             cont += 1
         except Exception as ex:
-            
             experimento.setEstado(EstadoExperimento.PENDIENTE)
             fin = datetime.now()
             RegistroMH.guardarExperimento(experimento, inicio, fin)

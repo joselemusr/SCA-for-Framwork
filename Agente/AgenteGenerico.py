@@ -28,7 +28,6 @@ class AgenteGenerico:
     def observarIndicadores(self,indicadores):
         self.indiceMejora = indicadores[TipoIndicadoresMH.INDICE_MEJORA]
         self.mejoraAcumulada += indicadores[TipoIndicadoresMH.INDICE_MEJORA]
-        self.factorEvolutivo.append(indicadores[TipoIndicadoresMH.FACTOR_EVOLUTIVO])
               
     def optimizarParametrosMH(self, params):
         ret = {}
