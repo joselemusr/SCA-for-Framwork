@@ -3,6 +3,7 @@ import numpy as np
 from DTO.IndicadoresMH import IndicadoresMH
 from DTO import TipoIndicadoresMH
 import math
+from Utils import CalculoDeDiversidades as dv
 
 class SCA(Metaheuristica):
     def __init__(self):
@@ -16,6 +17,11 @@ class SCA(Metaheuristica):
         self.mejorFitHistorica = None
         self.fitnessAnterior = None
         self.IteracionActual = None
+        self.maxDiversidades = None
+        self.diversidades = None
+        self.PorcentajeExplor = None
+        self.PorcentajeExplot = None
+        self.state = None
         print(f"Mh SCA creada")
         
 
@@ -34,6 +40,20 @@ class SCA(Metaheuristica):
 
     def generarPoblacion(self, numero):
         self.soluciones = self.problema.generarSoluciones(numero)
+        fitness = self.problema.evaluarFitness(self.soluciones)
+        matrixBin = self.problema.getMatrixBin()
+        self.diversidades, self.maxDiversidades, self.PorcentajeExplor, self.PorcentajeExplot, self.state = dv.ObtenerDiversidadYEstado(matrixBin,self.getParametros()[SCA.MAXDIVERSIDADES])
+
+        self.indicadores = {
+            TipoIndicadoresMH.INDICE_MEJORA:self.problema.getIndiceMejora()
+            ,TipoIndicadoresMH.FITNESS_MEJOR_GLOBAL:self.problema.getMejorEvaluacion()
+            ,TipoIndicadoresMH.FITNESS_MEJOR_ITERACION:fitness[self.idxMejorSolucion]
+            ,TipoIndicadoresMH.FITNESS_PROMEDIO:np.mean(fitness)
+            ,TipoIndicadoresMH.DIVERSIDADES:self.diversidades
+            ,TipoIndicadoresMH.PORCENTAJEEXPLORACION:self.PorcentajeExplor
+            ,TipoIndicadoresMH.PORCENTAJEEXPLOTACION:self.PorcentajeExplot
+            ,TipoIndicadoresMH.ESTADO:self.state
+        }
     
     def setParametros(self, parametros):
         for parametro in parametros:
@@ -62,11 +82,18 @@ class SCA(Metaheuristica):
 
         self.fitnessAnterior = fitness
 
+        matrixBin = self.problema.getMatrixBin()
+        self.diversidades, self.maxDiversidades, self.PorcentajeExplor, self.PorcentajeExplot, self.state = dv.ObtenerDiversidadYEstado(matrixBin,self.maxDiversidades)
+
         self.indicadores = {
             TipoIndicadoresMH.INDICE_MEJORA:self.problema.getIndiceMejora()
             ,TipoIndicadoresMH.FITNESS_MEJOR_GLOBAL:self.problema.getMejorEvaluacion()
             ,TipoIndicadoresMH.FITNESS_MEJOR_ITERACION:fitness[self.idxMejorSolucion]
             ,TipoIndicadoresMH.FITNESS_PROMEDIO:np.mean(fitness)
+            ,TipoIndicadoresMH.DIVERSIDADES:self.diversidades
+            ,TipoIndicadoresMH.PORCENTAJEEXPLORACION:self.PorcentajeExplor
+            ,TipoIndicadoresMH.PORCENTAJEEXPLOTACION:self.PorcentajeExplot
+            ,TipoIndicadoresMH.ESTADO:self.state
         }
 
     def _perturbarSoluciones(self): 

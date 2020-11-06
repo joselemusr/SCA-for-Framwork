@@ -61,3 +61,9 @@ class ParametroAgente:
 
     def getComponente(self):
         return self.componente
+
+    def setParametrosAgentePropios(self, ParametrosAgentePropios):
+        self.ParametrosAgentePropios = ParametrosAgentePropios
+
+    def getParametrosAgentePropios(self):
+        return self.ParametrosAgentePropios

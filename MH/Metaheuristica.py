@@ -1,8 +1,10 @@
 import inspect
+import numpy as np
 
 class Metaheuristica:
     NUM_ITER = "num_iter"
     NP = "np"
+    MAXDIVERSIDADES = np.zeros(7)
 
     def __init__(self, ruta):
         print(f"metaheuristica abstracta creada")

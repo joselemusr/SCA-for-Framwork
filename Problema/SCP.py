@@ -285,3 +285,5 @@ class SCP(Problema):
         self.graficador.live_plotter(np.arange(vels.shape[0]), vels, 'velocidades', dotSize=0.1, marker='.')
         self.graficador.live_plotter(np.arange(parametros.shape[0]), parametros, 'paramVel', dotSize=1.5, marker='-')
     
+    def getMatrixBin(self):
+        return self.matrixBin

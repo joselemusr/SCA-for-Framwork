@@ -53,7 +53,7 @@ class GenericSolver:
             indicadores = self.mh.getIndicadores()
             self.agente.observarIndicadores(indicadores)
             paramOptimizadosMH = self.agente.optimizarParametrosMH(self.mh.getParametros())
-            paramOptimizadosProblema = self.agente.optimizarParametrosProblema()
+            paramOptimizadosProblema = self.agente.optimizarParametrosProblema(self.problema.getParametros())
             self.mh.setParametros(paramOptimizadosMH)
             self.mh.problema.setParametros(paramOptimizadosProblema)
             fin = datetime.now()

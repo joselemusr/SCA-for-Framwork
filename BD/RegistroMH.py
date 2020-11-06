@@ -42,24 +42,55 @@ def insertDummyExp(nombreExperimento):
     parametros.setTransferFunctionType("V4")
     parametros.setBinarizationType("Elitist")
     parametros.setRepairType("repairSimple") #Puede ser "repairGPU", "repairSimple" o "repairCompleja" hasta el momento
-    parametros.setNomAgente("AgenteGenerico")
+    parametros.setNomAgente("QLearning")
     paramsMH = {}
     saltoStr = "a"
     paramsMH[saltoStr] = 2
-    #paramsMH["poblacion"] = 40
-    #paramsMH["numIter"] = 100
     paramsMH[SCA.NP] = 5
     paramsMH[SCA.NUM_ITER] = 10
     parametros.setParametrosMH(paramsMH)
-    paramsAgente = []
-    salto = ParametroAgente()
-    salto.setNombre(saltoStr)
-    salto.setTipo(TipoDominio.CONTINUO)
-    salto.setMinimo(1)
-    salto.setMaximo(10)
-    salto.setComponente(TipoComponente.METAHEURISTICA)
-    paramsAgente.append(salto)
+    paramsAutonomos = []
+    tBinaryName = "tBinary"
+    tBinary = ParametroAgente()
+    tBinary.setNombre(tBinaryName)
+    tBinary.setTipo(TipoDominio.DISCRETO)
+    tBinary.setMinimo(1)
+    tBinary.setMaximo(40)
+    tBinary.setPaso(1)
+    tBinary.setComponente(TipoComponente.PROBLEMA)
+    
+    tTransferenciaName = "tTransferencia"
+    tTransferencia = ParametroAgente()
+    tTransferencia.setNombre(tTransferenciaName)
+    tTransferencia.setTipo(TipoDominio.DISCRETO)
+    tTransferencia.setMinimo(1)
+    tTransferencia.setMaximo(40)
+    tTransferencia.setPaso(1)
+    tTransferencia.setComponente(TipoComponente.PROBLEMA)
+    
+    paramsAgente = {}
+    Gamma = "Gamma"
+    Actions = "Actions"
+    stateType = "stateType"
+    qlAlphaType = "qlAlphaType"
+    rewardType = "rewardType"
+    PolicyType = "PolicyType"
+    iterMax = "iterMax"
+    epsilon = "epsilon"
+    qlAlpha = "qlAlpha"
+    paramsAgente[Gamma] = 0.4
+    paramsAgente[Actions] = 40
+    paramsAgente[stateType] = 2
+    paramsAgente[qlAlphaType] = "static"
+    paramsAgente[rewardType] = "withPenalty1"
+    paramsAgente[PolicyType] = "softMax-rulette-elitist"
+    paramsAgente[iterMax] = 10
+    paramsAgente[epsilon] = 0.1
+    paramsAgente[qlAlpha] = 0.1
+        
     parametros.setParametrosAgente(paramsAgente)
+
+
     session = createSession()
     session.execute(sqlInsert,{
         "nomExp":nombreExperimento

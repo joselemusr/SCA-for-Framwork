@@ -1,3 +1,4 @@
+
 from DTO import TipoIndicadoresMH, TipoParametro, TipoComponente, TipoIndicadoresMH, TipoDominio
 import numpy as np
 

@@ -17,6 +17,12 @@ class Parametro:
     def getParametrosMH(self):
         return self.parametrosMH
 
+    def setParametrosAutonomo(self,ParametrosAutonomo):
+        self.ParametrosAutonomo = ParametrosAutonomo
+
+    def getParametrosAutonomo(self):
+        return self.ParametrosAutonomo
+
     def setParametrosAgente(self,parametros):
         self.parametrosAgente = parametros
 
